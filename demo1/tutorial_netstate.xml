@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2024-10-22 20:19:27 by Eclipse SUMO GUI Version 1.20.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="/Users/luchenyang/Documents/SRT/11.net.xml"/>
+        <route-files value="/Users/luchenyang/Documents/SRT/11.rou.xml"/>
+    </input>
+
+    <output>
+        <netstate-dump value="/Users/luchenyang/Documents/SRT/tutorial_netstate.xml"/>
+        <fcd-output value="/Users/luchenyang/Documents/SRT/tutorial_fcd.xml"/>
+    </output>
+
+</configuration>
+-->
+
+<netstate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netstate_file.xsd">
+    <timestep time="0.00">
+        <edge id="-E5">
+            <lane id="-E5_0">
+                <vehicle id="t_0" pos="5.10" speed="0.00"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="1.00">
+        <edge id="-E5">
+            <lane id="-E5_0">
+                <vehicle id="t_0" pos="7.06" speed="1.96"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="2.00">
+        <edge id="-E5">
+            <lane id="-E5_0">
+                <vehicle id="t_0" pos="11.50" speed="4.44"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="3.00">
+        <edge id="-E5">
+            <lane id="-E5_0">
+                <vehicle id="t_0" pos="17.33" speed="5.83"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="4.00">
+        <edge id="-E5">
+            <lane id="-E5_0">
+                <vehicle id="t_0" pos="25.54" speed="8.21"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="5.00">
+        <edge id="-E5">
+            <lane id="-E5_0">
+                <vehicle id="t_0" pos="34.60" speed="9.06"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="6.00">
+        <edge id="-E5">
+            <lane id="-E5_0">
+                <vehicle id="t_0" pos="39.70" speed="5.11"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="7.00">
+        <edge id=":J12_10">
+            <lane id=":J12_10_0">
+                <vehicle id="t_0" pos="4.08" speed="7.17"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="8.00">
+        <edge id=":J12_10">
+            <lane id=":J12_10_0">
+                <vehicle id="t_0" pos="12.59" speed="8.51"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="9.00">
+        <edge id="E6">
+            <lane id="E6_0">
+                <vehicle id="t_0" pos="8.76" speed="10.57"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="10.00">
+        <edge id="E6">
+            <lane id="E6_0">
+                <vehicle id="t_0" pos="21.00" speed="12.24"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="11.00">
+        <edge id="E6">
+            <lane id="E6_0">
+                <vehicle id="t_0" pos="35.49" speed="14.49"/>
+            </lane>
+        </edge>
+    </timestep>
+    <timestep time="12.00"/>
+</netstate>

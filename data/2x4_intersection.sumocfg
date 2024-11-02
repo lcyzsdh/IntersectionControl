@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<configuration>
+
+    <input>
+        <net-file value="2x4_intersection.net.xml"/>
+        <route-files value="2x4_intersection.rou.xml"/>
+    </input>
+
+</configuration>

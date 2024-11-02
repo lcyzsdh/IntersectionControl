@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a basic configuration file for SUMO. -->
+
+<routes>
+    <route edges="road_hrz_1 road_hrz_2" color="yellow" id="route_0"/>
+    <route edges="road_hrz_1 road_ver_2" color="yellow" id="route_1"/>
+    <route edges="road_hrz_3 road_hrz_4" color="yellow" id="route_2"/>
+    <route edges="road_hrz_3 road_ver_4" color="yellow" id="route_3"/>
+    <route edges="road_ver_1 road_ver_2" color="yellow" id="route_4"/>
+    <route edges="road_ver_1 road_hrz_4" color="yellow" id="route_5"/>
+    <route edges="road_ver_3 road_ver_4" color="yellow" id="route_6"/>
+    <route edges="road_ver_3 road_hrz_2" color="yellow" id="route_7"/>
+</routes>
