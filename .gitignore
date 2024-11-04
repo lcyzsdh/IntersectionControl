@@ -1,5 +1,2 @@
 out/
 src/__pycache__
-out/collisions.xml
-out/statistics.xml
-out/tripinfo.xml

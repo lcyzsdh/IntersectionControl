@@ -33,3 +33,5 @@ def cal_adjustments(passing_order,velocity):
             m.addConstr(s[veh[0]][2,k+1]==s[veh[0]][2,k]+u[veh[0]][k]*dt)
     
     #如何确定车辆的二维坐标？
+    
+    m.optimize()
