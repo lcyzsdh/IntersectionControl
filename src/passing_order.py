@@ -24,6 +24,7 @@ class PassingOrder:
 
         for veh in passing_order:
             self.adjusted_order[veh[0]] = 0
+            #print("veh[0]:",veh[0])
 
     def calculate_adjustments(self):#计算调整
         for i, veh in enumerate(self.passing_order):

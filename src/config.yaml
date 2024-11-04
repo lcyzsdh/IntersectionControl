@@ -38,3 +38,10 @@ veh_col_white: [255, 255, 255]  # default behaviour
 veh_col_green: [0, 165, 0]      # in control zone
 veh_col_orange: [255, 165, 0]   # adjusting trajectory
 veh_col_grey: [120, 120, 120]   # intersection traversal
+
+#Gurobi parameters begin
+time_steps: 100
+total_time: 10
+a_min: -5
+a_max: 5
+#Gurobi parameters end
