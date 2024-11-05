@@ -53,8 +53,11 @@ class Vehicle:
                 "route": veh.route[6:],
                 "edge": traci.vehicle.getLaneID(veh.veh_id),
                 "distance": float(self.get_dist_to_intersection(veh.veh_id)),
-                "adjustment": 0
+                "adjustment": 0,
+                "Posiotion":traci.vehicle.getPosition(veh.veh_id)
             }
+            #print("车辆编号：",veh.veh_id,"车辆位置：",traci.vehicle.getPosition(veh.veh_id))
+        print("veh_data:",self.veh_data)
 
         return self.veh_data
 

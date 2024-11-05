@@ -45,3 +45,5 @@ total_time: 10
 a_min: -5
 a_max: 5
 #Gurobi parameters end
+
+colliding_crossings: [[0, 4], [0, 6],[2, 4], [2, 6]]

@@ -1,0 +1,8 @@
+\ Model integrator_qp_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Minimize
+ 
+Subject To
+ R1188: s_veh_0[0,0] = -15
+Bounds
+End
