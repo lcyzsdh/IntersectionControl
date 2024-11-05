@@ -3,6 +3,229 @@
 Minimize
  
 Subject To
- R1188: s_veh_0[0,0] = -15
+ R892: - s_veh_3[1,0] + s_veh_3[1,1] - 0.1 v_veh_3[0] = 0
+ R893: - v_veh_3[0] + v_veh_3[1] - 0.1 u_veh_3[0] = 0
+ R895: - s_veh_3[1,1] + s_veh_3[1,2] - 0.1 v_veh_3[1] = 0
+ R896: - v_veh_3[1] + v_veh_3[2] - 0.1 u_veh_3[1] = 0
+ R898: - s_veh_3[1,2] + s_veh_3[1,3] - 0.1 v_veh_3[2] = 0
+ R899: - v_veh_3[2] + v_veh_3[3] - 0.1 u_veh_3[2] = 0
+ R901: - s_veh_3[1,3] + s_veh_3[1,4] - 0.1 v_veh_3[3] = 0
+ R902: - v_veh_3[3] + v_veh_3[4] - 0.1 u_veh_3[3] = 0
+ R904: - s_veh_3[1,4] + s_veh_3[1,5] - 0.1 v_veh_3[4] = 0
+ R905: - v_veh_3[4] + v_veh_3[5] - 0.1 u_veh_3[4] = 0
+ R907: - s_veh_3[1,5] + s_veh_3[1,6] - 0.1 v_veh_3[5] = 0
+ R908: - v_veh_3[5] + v_veh_3[6] - 0.1 u_veh_3[5] = 0
+ R910: - s_veh_3[1,6] + s_veh_3[1,7] - 0.1 v_veh_3[6] = 0
+ R911: - v_veh_3[6] + v_veh_3[7] - 0.1 u_veh_3[6] = 0
+ R913: - s_veh_3[1,7] + s_veh_3[1,8] - 0.1 v_veh_3[7] = 0
+ R914: - v_veh_3[7] + v_veh_3[8] - 0.1 u_veh_3[7] = 0
+ R916: - s_veh_3[1,8] + s_veh_3[1,9] - 0.1 v_veh_3[8] = 0
+ R919: - s_veh_3[1,9] + s_veh_3[1,10] - 0.1 v_veh_3[9] = 0
+ R922: - s_veh_3[1,10] + s_veh_3[1,11] - 0.1 v_veh_3[10] = 0
+ R925: - s_veh_3[1,11] + s_veh_3[1,12] - 0.1 v_veh_3[11] = 0
+ R928: - s_veh_3[1,12] + s_veh_3[1,13] - 0.1 v_veh_3[12] = 0
+ R931: - s_veh_3[1,13] + s_veh_3[1,14] - 0.1 v_veh_3[13] = 0
+ R934: - s_veh_3[1,14] + s_veh_3[1,15] - 0.1 v_veh_3[14] = 0
+ R937: - s_veh_3[1,15] + s_veh_3[1,16] - 0.1 v_veh_3[15] = 0
+ R940: - s_veh_3[1,16] + s_veh_3[1,17] - 0.1 v_veh_3[16] = 0
+ R943: - s_veh_3[1,17] + s_veh_3[1,18] - 0.1 v_veh_3[17] = 0
+ R946: - s_veh_3[1,18] + s_veh_3[1,19] - 0.1 v_veh_3[18] = 0
+ R949: - s_veh_3[1,19] + s_veh_3[1,20] - 0.1 v_veh_3[19] = 0
+ R952: - s_veh_3[1,20] + s_veh_3[1,21] - 0.1 v_veh_3[20] = 0
+ R955: - s_veh_3[1,21] + s_veh_3[1,22] - 0.1 v_veh_3[21] = 0
+ R958: - s_veh_3[1,22] + s_veh_3[1,23] - 0.1 v_veh_3[22] = 0
+ R961: - s_veh_3[1,23] + s_veh_3[1,24] - 0.1 v_veh_3[23] = 0
+ R964: - s_veh_3[1,24] + s_veh_3[1,25] - 0.1 v_veh_3[24] = 0
+ R967: - s_veh_3[1,25] + s_veh_3[1,26] - 0.1 v_veh_3[25] = 0
+ R970: - s_veh_3[1,26] + s_veh_3[1,27] - 0.1 v_veh_3[26] = 0
+ R973: - s_veh_3[1,27] + s_veh_3[1,28] - 0.1 v_veh_3[27] = 0
+ R976: - s_veh_3[1,28] + s_veh_3[1,29] - 0.1 v_veh_3[28] = 0
+ R979: - s_veh_3[1,29] + s_veh_3[1,30] - 0.1 v_veh_3[29] = 0
+ R982: - s_veh_3[1,30] + s_veh_3[1,31] - 0.1 v_veh_3[30] = 0
+ R985: - s_veh_3[1,31] + s_veh_3[1,32] - 0.1 v_veh_3[31] = 0
+ R988: - s_veh_3[1,32] + s_veh_3[1,33] - 0.1 v_veh_3[32] = 0
+ R991: - s_veh_3[1,33] + s_veh_3[1,34] - 0.1 v_veh_3[33] = 0
+ R994: - s_veh_3[1,34] + s_veh_3[1,35] - 0.1 v_veh_3[34] = 0
+ R997: - s_veh_3[1,35] + s_veh_3[1,36] - 0.1 v_veh_3[35] = 0
+ R1000: - s_veh_3[1,36] + s_veh_3[1,37] - 0.1 v_veh_3[36] = 0
+ R1003: - s_veh_3[1,37] + s_veh_3[1,38] - 0.1 v_veh_3[37] = 0
+ R1006: - s_veh_3[1,38] + s_veh_3[1,39] - 0.1 v_veh_3[38] = 0
+ R1009: - s_veh_3[1,39] + s_veh_3[1,40] - 0.1 v_veh_3[39] = 0
+ R1012: - s_veh_3[1,40] + s_veh_3[1,41] - 0.1 v_veh_3[40] = 0
+ R1015: - s_veh_3[1,41] + s_veh_3[1,42] - 0.1 v_veh_3[41] = 0
+ R1018: - s_veh_3[1,42] + s_veh_3[1,43] - 0.1 v_veh_3[42] = 0
+ R1021: - s_veh_3[1,43] + s_veh_3[1,44] - 0.1 v_veh_3[43] = 0
+ R1024: - s_veh_3[1,44] + s_veh_3[1,45] - 0.1 v_veh_3[44] = 0
+ R1027: - s_veh_3[1,45] + s_veh_3[1,46] - 0.1 v_veh_3[45] = 0
+ R1030: - s_veh_3[1,46] + s_veh_3[1,47] - 0.1 v_veh_3[46] = 0
+ R1033: - s_veh_3[1,47] + s_veh_3[1,48] - 0.1 v_veh_3[47] = 0
+ R1036: - s_veh_3[1,48] + s_veh_3[1,49] - 0.1 v_veh_3[48] = 0
+ R1039: - s_veh_3[1,49] + s_veh_3[1,50] - 0.1 v_veh_3[49] = 0
+ R1042: - s_veh_3[1,50] + s_veh_3[1,51] - 0.1 v_veh_3[50] = 0
+ R1045: - s_veh_3[1,51] + s_veh_3[1,52] - 0.1 v_veh_3[51] = 0
+ R1048: - s_veh_3[1,52] + s_veh_3[1,53] - 0.1 v_veh_3[52] = 0
+ R1051: - s_veh_3[1,53] + s_veh_3[1,54] - 0.1 v_veh_3[53] = 0
+ R1054: - s_veh_3[1,54] + s_veh_3[1,55] - 0.1 v_veh_3[54] = 0
+ R1057: - s_veh_3[1,55] + s_veh_3[1,56] - 0.1 v_veh_3[55] = 0
+ R1060: - s_veh_3[1,56] + s_veh_3[1,57] - 0.1 v_veh_3[56] = 0
+ R1063: - s_veh_3[1,57] + s_veh_3[1,58] - 0.1 v_veh_3[57] = 0
+ R1066: - s_veh_3[1,58] + s_veh_3[1,59] - 0.1 v_veh_3[58] = 0
+ R1069: - s_veh_3[1,59] + s_veh_3[1,60] - 0.1 v_veh_3[59] = 0
+ R1072: - s_veh_3[1,60] + s_veh_3[1,61] - 0.1 v_veh_3[60] = 0
+ R1075: - s_veh_3[1,61] + s_veh_3[1,62] - 0.1 v_veh_3[61] = 0
+ R1078: - s_veh_3[1,62] + s_veh_3[1,63] - 0.1 v_veh_3[62] = 0
+ R1081: - s_veh_3[1,63] + s_veh_3[1,64] - 0.1 v_veh_3[63] = 0
+ R1084: - s_veh_3[1,64] + s_veh_3[1,65] - 0.1 v_veh_3[64] = 0
+ R1087: - s_veh_3[1,65] + s_veh_3[1,66] - 0.1 v_veh_3[65] = 0
+ R1090: - s_veh_3[1,66] + s_veh_3[1,67] - 0.1 v_veh_3[66] = 0
+ R1093: - s_veh_3[1,67] + s_veh_3[1,68] - 0.1 v_veh_3[67] = 0
+ R1096: - s_veh_3[1,68] + s_veh_3[1,69] - 0.1 v_veh_3[68] = 0
+ R1099: - s_veh_3[1,69] + s_veh_3[1,70] - 0.1 v_veh_3[69] = 0
+ R1102: - s_veh_3[1,70] + s_veh_3[1,71] - 0.1 v_veh_3[70] = 0
+ R1105: - s_veh_3[1,71] + s_veh_3[1,72] - 0.1 v_veh_3[71] = 0
+ R1108: - s_veh_3[1,72] + s_veh_3[1,73] - 0.1 v_veh_3[72] = 0
+ R1111: - s_veh_3[1,73] + s_veh_3[1,74] - 0.1 v_veh_3[73] = 0
+ R1114: - s_veh_3[1,74] + s_veh_3[1,75] - 0.1 v_veh_3[74] = 0
+ R1117: - s_veh_3[1,75] + s_veh_3[1,76] - 0.1 v_veh_3[75] = 0
+ R1120: - s_veh_3[1,76] + s_veh_3[1,77] - 0.1 v_veh_3[76] = 0
+ R1123: - s_veh_3[1,77] + s_veh_3[1,78] - 0.1 v_veh_3[77] = 0
+ R1126: - s_veh_3[1,78] + s_veh_3[1,79] - 0.1 v_veh_3[78] = 0
+ R1129: - s_veh_3[1,79] + s_veh_3[1,80] - 0.1 v_veh_3[79] = 0
+ R1132: - s_veh_3[1,80] + s_veh_3[1,81] - 0.1 v_veh_3[80] = 0
+ R1135: - s_veh_3[1,81] + s_veh_3[1,82] - 0.1 v_veh_3[81] = 0
+ R1138: - s_veh_3[1,82] + s_veh_3[1,83] - 0.1 v_veh_3[82] = 0
+ R1141: - s_veh_3[1,83] + s_veh_3[1,84] - 0.1 v_veh_3[83] = 0
+ R1144: - s_veh_3[1,84] + s_veh_3[1,85] - 0.1 v_veh_3[84] = 0
+ R1147: - s_veh_3[1,85] + s_veh_3[1,86] - 0.1 v_veh_3[85] = 0
+ R1150: - s_veh_3[1,86] + s_veh_3[1,87] - 0.1 v_veh_3[86] = 0
+ R1153: - s_veh_3[1,87] + s_veh_3[1,88] - 0.1 v_veh_3[87] = 0
+ R1156: - s_veh_3[1,88] + s_veh_3[1,89] - 0.1 v_veh_3[88] = 0
+ R1159: - s_veh_3[1,89] + s_veh_3[1,90] - 0.1 v_veh_3[89] = 0
+ R1162: - s_veh_3[1,90] + s_veh_3[1,91] - 0.1 v_veh_3[90] = 0
+ R1165: - s_veh_3[1,91] + s_veh_3[1,92] - 0.1 v_veh_3[91] = 0
+ R1168: - s_veh_3[1,92] + s_veh_3[1,93] - 0.1 v_veh_3[92] = 0
+ R1171: - s_veh_3[1,93] + s_veh_3[1,94] - 0.1 v_veh_3[93] = 0
+ R1174: - s_veh_3[1,94] + s_veh_3[1,95] - 0.1 v_veh_3[94] = 0
+ R1177: - s_veh_3[1,95] + s_veh_3[1,96] - 0.1 v_veh_3[95] = 0
+ R1180: - s_veh_3[1,96] + s_veh_3[1,97] - 0.1 v_veh_3[96] = 0
+ R1183: - s_veh_3[1,97] + s_veh_3[1,98] - 0.1 v_veh_3[97] = 0
+ R1198: s_veh_3[1,0] = 10
+ R1199: v_veh_3[0] = 10
 Bounds
+ s_veh_3[1,0] free
+ s_veh_3[1,1] free
+ s_veh_3[1,2] free
+ s_veh_3[1,3] free
+ s_veh_3[1,4] free
+ s_veh_3[1,5] free
+ s_veh_3[1,6] free
+ s_veh_3[1,7] free
+ s_veh_3[1,8] free
+ s_veh_3[1,9] free
+ s_veh_3[1,10] free
+ s_veh_3[1,11] free
+ s_veh_3[1,12] free
+ s_veh_3[1,13] free
+ s_veh_3[1,14] free
+ s_veh_3[1,15] free
+ s_veh_3[1,16] free
+ s_veh_3[1,17] free
+ s_veh_3[1,18] free
+ s_veh_3[1,19] free
+ s_veh_3[1,20] free
+ s_veh_3[1,21] free
+ s_veh_3[1,22] free
+ s_veh_3[1,23] free
+ s_veh_3[1,24] free
+ s_veh_3[1,25] free
+ s_veh_3[1,26] free
+ s_veh_3[1,27] free
+ s_veh_3[1,28] free
+ s_veh_3[1,29] free
+ s_veh_3[1,30] free
+ s_veh_3[1,31] free
+ s_veh_3[1,32] free
+ s_veh_3[1,33] free
+ s_veh_3[1,34] free
+ s_veh_3[1,35] free
+ s_veh_3[1,36] free
+ s_veh_3[1,37] free
+ s_veh_3[1,38] free
+ s_veh_3[1,39] free
+ s_veh_3[1,40] free
+ s_veh_3[1,41] free
+ s_veh_3[1,42] free
+ s_veh_3[1,43] free
+ s_veh_3[1,44] free
+ s_veh_3[1,45] free
+ s_veh_3[1,46] free
+ s_veh_3[1,47] free
+ s_veh_3[1,48] free
+ s_veh_3[1,49] free
+ s_veh_3[1,50] free
+ s_veh_3[1,51] free
+ s_veh_3[1,52] free
+ s_veh_3[1,53] free
+ s_veh_3[1,54] free
+ s_veh_3[1,55] free
+ s_veh_3[1,56] free
+ s_veh_3[1,57] free
+ s_veh_3[1,58] free
+ s_veh_3[1,59] free
+ s_veh_3[1,60] free
+ s_veh_3[1,61] free
+ s_veh_3[1,62] free
+ s_veh_3[1,63] free
+ s_veh_3[1,64] free
+ s_veh_3[1,65] free
+ s_veh_3[1,66] free
+ s_veh_3[1,67] free
+ s_veh_3[1,68] free
+ s_veh_3[1,69] free
+ s_veh_3[1,70] free
+ s_veh_3[1,71] free
+ s_veh_3[1,72] free
+ s_veh_3[1,73] free
+ s_veh_3[1,74] free
+ s_veh_3[1,75] free
+ s_veh_3[1,76] free
+ s_veh_3[1,77] free
+ s_veh_3[1,78] free
+ s_veh_3[1,79] free
+ s_veh_3[1,80] free
+ s_veh_3[1,81] free
+ s_veh_3[1,82] free
+ s_veh_3[1,83] free
+ s_veh_3[1,84] free
+ s_veh_3[1,85] free
+ s_veh_3[1,86] free
+ s_veh_3[1,87] free
+ s_veh_3[1,88] free
+ s_veh_3[1,89] free
+ s_veh_3[1,90] free
+ s_veh_3[1,91] free
+ s_veh_3[1,92] free
+ s_veh_3[1,93] free
+ s_veh_3[1,94] free
+ s_veh_3[1,95] free
+ s_veh_3[1,96] free
+ s_veh_3[1,97] free
+ -infinity <= s_veh_3[1,98] <= 10
+ v_veh_3[0] free
+ v_veh_3[1] free
+ v_veh_3[2] free
+ v_veh_3[3] free
+ v_veh_3[4] free
+ v_veh_3[5] free
+ v_veh_3[6] free
+ v_veh_3[7] free
+ v_veh_3[8] free
+ u_veh_3[0] >= -5
+ u_veh_3[1] >= -5
+ u_veh_3[2] >= -5
+ u_veh_3[3] >= -5
+ u_veh_3[4] >= -5
+ u_veh_3[5] >= -5
+ u_veh_3[6] >= -5
+ u_veh_3[7] >= -5
 End
