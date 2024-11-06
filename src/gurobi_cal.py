@@ -6,8 +6,8 @@ config_file = open("./src/config.yaml")
 cfg = yaml.safe_load(config_file)
 # Define the parameters
 #TODO:Correct the parameters
-N = 100  # Number of time steps
-T = 20  # Total time horizon
+N = 140  # Number of time steps
+T = 14  # Total time horizon
 dt = T / N  # Time step
 #v_ref = 10  # Reference speed
 a_min = cfg["a_min"]  # Minimum acceleration
@@ -41,7 +41,7 @@ def animate_trajectories(passing_order, s, N):
             x_coords = [s[veh][0, k].x for k in range(frame + 1)]
             y_coords = [s[veh][1, k].x for k in range(frame + 1)]
             lines[veh].set_data(x_coords, y_coords)
-            points[veh].set_data(x_coords[-1], y_coords[-1])
+            points[veh].set_data([x_coords[-1]], [y_coords[-1]])
         return list(lines.values()) + list(points.values())
 
     ani = animation.FuncAnimation(fig, update, frames=N, init_func=init, blit=True, repeat=False)
@@ -57,7 +57,7 @@ def cal_adjustments(passing_order,velocity):
         #TODO: correct the bound
         s[veh]=m.addVars(2,N,lb=-100,ub=100,name="s_"+veh)# State variables [positionX, positionY]
         v[veh]=m.addVars(N,lb=0,ub=30.0,name="v_"+veh)# Control variables [velocity]
-        u[veh]=m.addVars(N,lb=-1,ub=1,name="u_"+veh)# Control variables [acceleration]
+        u[veh]=m.addVars(N,lb=-0.7,ub=0.7,name="u_"+veh)# Control variables [acceleration]
 
     # Objective: minimize the sum of squared deviations from the reference speed
     m.setObjective(gp.quicksum((v[veh][k]-velocity[veh])**2 for veh in passing_order for k in range(N)),GRB.MINIMIZE)
@@ -85,7 +85,7 @@ def cal_adjustments(passing_order,velocity):
                 m.addConstr(s[veh][1,k+1]==s[veh][1,k]+dt*v[veh][k])#positionY
                 m.addConstr(v[veh][k+1]==v[veh][k]+dt*u[veh][k])#velocity
                 #print("get!!!!!!"+veh)
-    print("init over!!!!!!!")
+    #print("init over!!!!!!!")
     for veh in passing_order:
         for veh_1 in passing_order:
             #print([passing_order[veh]["route"],passing_order[veh]["route"]])
@@ -93,7 +93,10 @@ def cal_adjustments(passing_order,velocity):
                 for k in range(N):
                     #print("get!!!!!!")
                     #TODO: correct the distance fomula
-                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(3.1)**2)#distance needs tuning
+                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(0.94)**2)#distance needs tuning
+            elif passing_order[veh]["route"]==0 and passing_order[veh_1]["route"]==0 and veh!=veh_1:
+                for k in range(N):
+                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2)>=(2)**2)#distance needs tuning
                 
 
     #initial condition
@@ -119,28 +122,34 @@ if __name__ == "__main__":
         "veh_0": {
             "route": 0,
             "distance": 10,
-            "Position": [-15, -1.5]
+            "Position": [-10, -1.5]
         },
         "veh_1": {
             "route": 2,
             "distance": 10,
-            "Position": [14, 1.5]
+            "Position": [6.99, 1.5]
         },
         "veh_2": {
             "route": 4,
             "distance": 10,
-            "Position": [-1.5, 13]
+            "Position": [-1.5, 8]
         },
         "veh_3": {
             "route": 6,
             "distance": 10,
-            "Position": [1.5, -10]
+            "Position": [1.5, -4.5]
+        },
+        "veh_4": {
+            "route": 0,
+            "distance": 10,
+            "Position": [-13.5, -1.5]
         }
     }
     velocity = {
-        "veh_0": 1,
-        "veh_1": 1,
-        "veh_2": 1,
-        "veh_3": 1
-    }
+        "veh_0": 1.05,
+        "veh_1": 1.1,
+        "veh_2": 1.01,
+        "veh_3": 1,
+        "veh_4": 1.11
+    }#时间切分不够细
     cal_adjustments(passing_order,velocity)
