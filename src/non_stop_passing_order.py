@@ -17,3 +17,7 @@ class PassingOrder:
 
     def calculate_adjustments(self):
         results=gurobi_cal.cal_adjustments(self.passing_order, self.adjusted_velocity)
+        for veh in passing_order:
+            if veh[1]["distance"]>100:
+                pass
+            #对于圈外的车辆需要对通行速度进行控制

@@ -139,12 +139,18 @@ if __name__ == "__main__":
             "route": 6,
             "distance": 10,
             "Position": [1.5, -87]
+        },
+        "veh_4": {
+            "route": 0,
+            "distance": 10,
+            "Position": [85, -1.5]
         }
     }
     velocity = {
         "veh_0": 14.5,
         "veh_1": 14,
         "veh_2": 14.3,
-        "veh_3": 14.1
-    }
+        "veh_3": 14.1,
+        "veh_4": 14.3
+    }#时间切分不够细
     cal_adjustments(passing_order,velocity)
