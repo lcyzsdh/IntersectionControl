@@ -66,7 +66,6 @@ def main():#可以添加车辆流
         traci.simulationStep()
         step += 1
         # print(f"Step: {step}")
-
         z1_radius, z2_radius = get_zone_radii()
 
         

@@ -16,4 +16,4 @@ class PassingOrder:
 
 
     def calculate_adjustments(self):
-        velocity=gurobi_cal.cal_adjustments(self.passing_order, self.adjusted_velocity)
+        results=gurobi_cal.cal_adjustments(self.passing_order, self.adjusted_velocity)

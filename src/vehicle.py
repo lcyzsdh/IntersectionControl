@@ -57,7 +57,6 @@ class Vehicle:
                 "Posiotion":traci.vehicle.getPosition(veh.veh_id)
             }
             #print("车辆编号：",veh.veh_id,"车辆位置：",traci.vehicle.getPosition(veh.veh_id))
-        print("veh_data:",self.veh_data)
 
         return self.veh_data
 
