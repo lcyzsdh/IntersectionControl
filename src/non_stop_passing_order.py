@@ -17,7 +17,16 @@ class PassingOrder:
 
     def calculate_adjustments(self):
         results=gurobi_cal.cal_adjustments(self.passing_order, self.adjusted_velocity)
-        for veh in passing_order:
-            if veh[1]["distance"]>100:
-                pass
-            #对于圈外的车辆需要对通行速度进行控制
+        other_velocity={}
+        for i, veh in enumerate(self.passing_order):
+                for v in self.passing_order[i:0:-1]:
+                    if traci.vehicle.getRoadID(veh) == traci.vehicle.getRoadID(v):#找到前车
+                         veh1_speed=traci.vehicle.getSpeed(veh)
+                         veh1_position=traci.vehicle.getPosition(veh)
+                         veh2_speed=traci.vehicle.getSpeed(v)
+                         veh2_position=traci.vehicle.getPosition(v)
+                         distance=(veh1_position[0]-veh2_position[0])**2+(veh1_position[1]-veh2_position[1])**2
+                         a_max=5
+                         s_ex=8+max(0,veh1_speed*0.01+veh1_speed*(veh1_speed-veh2_speed)/2/a_max)
+                         dv=a_max*(1-(veh1_speed/13.88)**1 -(s_ex/distance)**2)
+                              

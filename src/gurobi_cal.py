@@ -55,7 +55,7 @@ def cal_adjustments(passing_order,velocity):
     v={}
     for veh in passing_order:
         #TODO: correct the bound
-        s[veh]=m.addVars(2,N,lb=-100,ub=100,name="s_"+veh)# State variables [positionX, positionY]
+        s[veh]=m.addVars(2,N,lb=-200,ub=200,name="s_"+veh)# State variables [positionX, positionY]
         v[veh]=m.addVars(N,lb=0,ub=15,name="v_"+veh)# Control variables [velocity]
         u[veh]=m.addVars(N,lb=-4,ub=4,name="u_"+veh)# Control variables [acceleration]
 
@@ -139,18 +139,12 @@ if __name__ == "__main__":
             "route": 6,
             "distance": 10,
             "Position": [1.5, -87]
-        },
-        "veh_4": {
-            "route": 0,
-            "distance": 10,
-            "Position": [85, -1.5]
         }
     }
     velocity = {
         "veh_0": 14.5,
         "veh_1": 14,
         "veh_2": 14.3,
-        "veh_3": 14.1,
-        "veh_4": 14.3
+        "veh_3": 14.1
     }#时间切分不够细
     cal_adjustments(passing_order,velocity)
