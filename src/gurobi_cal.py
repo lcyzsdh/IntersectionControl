@@ -1,7 +1,7 @@
 import gurobipy as gp
 from gurobipy import GRB
 import yaml
-
+import test_set
 config_file = open("./src/config.yaml")
 cfg = yaml.safe_load(config_file)
 # Define the parameters
@@ -19,8 +19,8 @@ import matplotlib.animation as animation
 # Define the function to animate the trajectories
 def animate_trajectories(passing_order, s, N):
     fig, ax = plt.subplots(figsize=(10, 10))
-    ax.set_xlim(-100, 100)
-    ax.set_ylim(-100, 100)
+    ax.set_xlim(-130, 130)
+    ax.set_ylim(-130, 130)
     ax.set_xlabel("Position X")
     ax.set_ylabel("Position Y")
     ax.set_title("Vehicle Trajectories")
@@ -55,9 +55,9 @@ def cal_adjustments(passing_order,velocity):
     v={}
     for veh in passing_order:
         #TODO: correct the bound
-        s[veh]=m.addVars(2,N,lb=-200,ub=200,name="s_"+veh)# State variables [positionX, positionY]
+        s[veh]=m.addVars(2,N,lb=-300,ub=300,name="s_"+veh)# State variables [positionX, positionY]
         v[veh]=m.addVars(N,lb=0,ub=15,name="v_"+veh)# Control variables [velocity]
-        u[veh]=m.addVars(N,lb=-4,ub=4,name="u_"+veh)# Control variables [acceleration]
+        u[veh]=m.addVars(N,lb=-5,ub=5,name="u_"+veh)# Control variables [acceleration]
 
     # Objective: minimize the sum of squared deviations from the reference speed
     m.setObjective(gp.quicksum((v[veh][k]-velocity[veh])**2 for veh in passing_order for k in range(N)),GRB.MINIMIZE)
@@ -93,7 +93,9 @@ def cal_adjustments(passing_order,velocity):
                     #print("get!!!!!!")
                     #TODO: correct the distance fomula
                     m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(5)**2)#distance needs tuning
-                
+            if veh=="veh_0" and veh_1=="veh_4":
+                for k in range(N):
+                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2)>=(2)**2)
 
     #initial condition
     for veh in passing_order:
@@ -147,4 +149,5 @@ if __name__ == "__main__":
         "veh_2": 14.3,
         "veh_3": 14.1
     }#时间切分不够细
-    cal_adjustments(passing_order,velocity)
+    passing_order_new,velocity_new=test_set.parse_vehicle_data("./src/test2_fcd.xml", timestep_index=45)
+    cal_adjustments(passing_order_new,velocity_new)
