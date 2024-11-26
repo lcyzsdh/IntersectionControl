@@ -1,43 +1,41 @@
 import yaml
 import traci
 import numpy as np
-from passing_order import PassingOrder
-#import monte_carlo
+from non_stop_passing_order import PassingOrder
 
 config_file = open("./src/config.yaml")
-cfg = yaml.safe_load(config_file)
-
+cfg=yaml.safe_load(config_file)
 
 class Vehicle:
-    def __init__(self, veh_id, route, state, veh_data=None):
+    def __init__(self, veh_id, veh_id_ac,route, state, veh_data=None):
         if veh_data is None:
             veh_data = {}
-        self.veh_id = veh_id
+        self.veh_id = veh_id#system id:natural number
+        self.veh_id_ac = veh_id_ac#actual id:f route.number
         self.route = route
         self.state = state
         self.veh_data = veh_data
 
-        traci.vehicle.add(veh_id, route)
+        traci.vehicle.add(veh_id_ac, route)
         self.set_vehicle_state(state)
 
-    def set_vehicle_state(self, state):
+    def set_vehicle_state(self, state):#set different states for vehicles
         self.state = state
         if state == cfg["veh_state_default"]:
-            traci.vehicle.setColor(self.veh_id, cfg["veh_col_grey"])
-            traci.vehicle.setSpeedMode(self.veh_id, cfg["veh_safe_mode"])
-            traci.vehicle.setSpeed(self.veh_id, cfg["veh_speed_default"])
+            traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_grey"])
+            traci.vehicle.setSpeedMode(self.veh_id_ac, cfg["veh_safe_mode"])
+            traci.vehicle.setSpeed(self.veh_id_ac, cfg["veh_speed_default"])
 
         elif state == cfg["veh_state_control"]:
-            traci.vehicle.setColor(self.veh_id, cfg["veh_col_green"])
+            traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_green"])
 
         elif state == cfg["veh_state_intersection"]:
-            traci.vehicle.setColor(self.veh_id, cfg["veh_col_white"])
-            traci.vehicle.setSpeed(self.veh_id, cfg["veh_speed_intersection"])
+            traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_white"])
 
-    def is_outbound(self):#
+    def is_outbound(self):
         return traci.vehicle.getRoadID(self.veh_id) == traci.vehicle.getRoute(self.veh_id)[-1]
 
-    def get_dist_to_intersection(self, veh_id=None):#获得车辆到交叉口的距离
+    def get_dist_to_intersection(self, veh_id=None):#distance to the mid-point of the intersection
         if veh_id is None:
             veh_id = self.veh_id
 
@@ -45,28 +43,25 @@ class Vehicle:
         intersection_loc = np.array(cfg["intersection_coords"])
 
         return np.linalg.norm(loc - intersection_loc)
-
-    def gather_veh_data(self, vehicles):#收集车辆数据
+    
+    def gather_veh_data(self, vehicles):#gather vehicle data
         self.veh_data = {}
         for veh in vehicles:
             self.veh_data[veh.veh_id] = {
                 "route": veh.route[6:],
-                "edge": traci.vehicle.getLaneID(veh.veh_id),
-                "distance": float(self.get_dist_to_intersection(veh.veh_id)),
-                "adjustment": 0,
-                "Posiotion":traci.vehicle.getPosition(veh.veh_id)
+                "edge": traci.vehicle.getLaneID(veh.veh_id_ac),
+                "distance": float(self.get_dist_to_intersection(veh.veh_id_ac)),
+                "speed": traci.vehicle.getSpeed(veh.veh_id_ac),
+                "Posiotion":traci.vehicle.getPosition(veh.veh_id_ac),
+                "State":traci.vehicle.getState(veh.veh_id_ac)
             }
-            #print("车辆编号：",veh.veh_id,"车辆位置：",traci.vehicle.getPosition(veh.veh_id))
-
+        
         return self.veh_data
+    
+    def get_passing_data(self):
+        passing_data={}
+        passing_data=PassingOrder(sorted(self.veh_data.items(),key=lambda x:x[1]["distance"],reverse=True))#sort the vehicles by distance to the intersection
 
-    def get_passing_order(self):
-        passing_order = None
-        if cfg["passing_order_mode"] == cfg["passing_order_fcfs"]:
-            passing_order = PassingOrder(sorted(self.veh_data.items(), key=lambda item: item[1]["distance"]))#这里passing——order结构[车辆编号，车辆数据]
-        #elif cfg["passing_order_mode"] == cfg["passing_order_mcts"]:
-        #    passing_order = PassingOrder(monte_carlo.get_passing_order(self.veh_data))
+        passing_data.calculate_global_changes()
 
-        passing_order.calculate_adjustments()
-
-        return passing_order
+        return passing_data

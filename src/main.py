@@ -53,9 +53,9 @@ def main():
                 if veh.is_outbound():
                     veh.set_vehicle_state(cfg["veh_state_default"])
                 else:
-                    if veh.get_dist_to_intersection() < z2_radius:
+                    if veh.get_dist_to_intersection() < z2_r:
                         veh.set_vehicle_state(cfg["veh_state_intersection"])
-                    elif veh.get_dist_to_intersection() < z1_radius:
+                    elif veh.get_dist_to_intersection() < z1_r:
                         veh.set_vehicle_state(cfg["veh_state_control"])
             except TraCIException:
                 print(f"vehicle {veh.veh_id} has left the sim at step {step}")
@@ -66,7 +66,8 @@ def main():
         if step==20:#firstly enter the zone
             if cfg["passing_order_mode"]==cfg["passing_order_gurobi"]:
                 veh_data=vehicles[0].get_vehicle_data()
-                passing_data_total=vehicles[0].get_passing_data(veh_data)
+                if (step-20)%100==0:#100 steps for a total decision
+                    passing_data_total=vehicles[0].get_passing_data(veh_data)
                 excute_adjustments(passing_data_total[(step-20)%100])#split the total decision into pieces
         
     traci.close()
