@@ -11,7 +11,8 @@ statistics_out: "./out/statistics.xml"
 
 passing_order_fcfs: "fcfs"
 passing_order_mcts: "mcts"
-passing_order_mode: "fcfs"
+passing_order_gurobi: "gurobi"
+passing_order_mode: "gurobi"
 
 num_vehicles: 50
 num_routes: 8

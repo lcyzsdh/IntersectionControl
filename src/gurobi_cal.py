@@ -102,7 +102,8 @@ def cal_adjustments(passing_order,velocity):
         m.addConstr(s[veh][0,0]==passing_order[veh]["Position"][0])#positionX
         m.addConstr(s[veh][1,0]==passing_order[veh]["Position"][1])#positionY
         m.addConstr(v[veh][0]==velocity[veh])#velocity
-            
+
+    m.setParam("TimeLimit", 10)
     m.optimize()
     #m.computeIIS()
     #m.write('model.ilp')
