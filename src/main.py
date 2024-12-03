@@ -44,7 +44,7 @@ def main():
 
     step=0
     while step<cfg["max_simulation_steps"]:
-        traci.simulationStep()
+        traci.simulationStep(cfg["simulation_step_length"])#set step length
         step+=1
         z1_r,z2_r=get_zone_radii()
 
@@ -57,6 +57,8 @@ def main():
                         veh.set_vehicle_state(cfg["veh_state_intersection"])
                     elif veh.get_dist_to_intersection() < z1_r:
                         veh.set_vehicle_state(cfg["veh_state_control"])
+                    else:
+                        veh.set_vehicle_state(cfg["veh_state_out"])
             except TraCIException:
                 print(f"vehicle {veh.veh_id} has left the sim at step {step}")
                 vehicles.remove(veh)
@@ -65,8 +67,8 @@ def main():
 
         if step==20:#firstly enter the zone
             if cfg["passing_order_mode"]==cfg["passing_order_gurobi"]:
-                veh_data=vehicles[0].get_vehicle_data()
                 if (step-20)%100==0:#100 steps for a total decision
+                    veh_data=vehicles[0].get_vehicle_data()
                     passing_data_total=vehicles[0].get_passing_data(veh_data)
                 excute_adjustments(passing_data_total[(step-20)%100])#split the total decision into pieces
         

@@ -31,6 +31,9 @@ class Vehicle:
 
         elif state == cfg["veh_state_intersection"]:
             traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_white"])
+        elif state == cfg["veh_state_out"]:#final out
+            traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_grey"])
+            traci.vehicle.setSpeed(self.veh_id_ac, cfg["veh_speed_default"])
 
     def is_outbound(self):
         return traci.vehicle.getRoadID(self.veh_id) == traci.vehicle.getRoute(self.veh_id)[-1]

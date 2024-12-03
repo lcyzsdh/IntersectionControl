@@ -1,5 +1,6 @@
 intersection_coords: [0, 0]
 max_simulation_steps: 200
+simulation_step_length: 0.1
 mcts_time: 200  # mcts time budget in ms
 
 sumo_binary: "/opt/homebrew/opt/sumo/share/sumo"
@@ -29,6 +30,7 @@ veh_speed_intersection: 6.94  # ~25km/h
 veh_state_default: "sumo"
 veh_state_control: "control"
 veh_state_intersection: "intersection"
+veh_state_out: "sumo"
 
 zone_control_size: 500
 zone_intersection_size: 100

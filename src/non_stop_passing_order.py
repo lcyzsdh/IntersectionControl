@@ -6,14 +6,13 @@ config_file = open("./src/config.yaml")
 cfg = yaml.safe_load(config_file)
 
 class PassingOrder:
-    def __init__(self, vehicle_data):
+    def __init__(self, vehicle_data):#vehicle_data sorted by distance to intersection
         self.passing_order = vehicle_data
         self.adjusted_velocity = {}
-
+        self.core_vehicle_data={}
+        self.follower_vehicle_data={}
         for veh in vehicle_data:
-            #veh[0]为车辆ID，veh[1]为车辆数据
-            self.adjusted_velocity[veh[0]] = traci.vehicle.getSpeed(veh[0])
-
+             if vehicle_data[veh]
 
     def calculate_global_changes(self):
         results=gurobi_cal.cal_adjustments(self.passing_order, self.adjusted_velocity)
