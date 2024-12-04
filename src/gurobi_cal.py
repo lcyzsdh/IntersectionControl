@@ -6,8 +6,8 @@ config_file = open("./src/config.yaml")
 cfg = yaml.safe_load(config_file)
 # Define the parameters
 #TODO:Correct the parameters
-N = 100  # Number of time steps
-T = 10  # Total time horizon
+N = 50  # Number of time steps
+T = 5  # Total time horizon
 dt = T / N  # Time step
 #v_ref = 10  # Reference speed
 a_min = cfg["a_min"]  # Minimum acceleration
@@ -55,7 +55,7 @@ def cal_adjustments(passing_order,velocity):
     v={}
     for veh in passing_order:
         #TODO: correct the bound
-        s[veh]=m.addVars(2,N,lb=-300,ub=300,name="s_"+veh)# State variables [positionX, positionY]
+        s[veh]=m.addVars(2,N,lb=-800,ub=800,name="s_"+veh)# State variables [positionX, positionY]
         v[veh]=m.addVars(N,lb=0,ub=15,name="v_"+veh)# Control variables [velocity]
         u[veh]=m.addVars(N,lb=-5,ub=5,name="u_"+veh)# Control variables [acceleration]
 
@@ -93,9 +93,6 @@ def cal_adjustments(passing_order,velocity):
                     #print("get!!!!!!")
                     #TODO: correct the distance fomula
                     m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(5)**2)#distance needs tuning
-            if veh=="veh_0" and veh_1=="veh_4":
-                for k in range(N):
-                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2)>=(2)**2)
 
     #initial condition
     for veh in passing_order:
@@ -108,15 +105,15 @@ def cal_adjustments(passing_order,velocity):
     #m.computeIIS()
     #m.write('model.ilp')
 
-    results={}
+    results=[]
     for k in range(N):
-        results[k]={}
+        results.append({})
         for veh in passing_order:
             print(f"Time step {k}: veh_id = {veh} PositionX = {s[veh][0, k].x}, PositionY = {s[veh][1, k].X}, Velocity = {v[veh][k].X}")
             results[k][veh]={"PositionX":s[veh][0, k].x,"PositionY":s[veh][1, k].X,"Velocity":v[veh][k].X}
 
     print('Obj:', m.objVal)
-    animate_trajectories(passing_order, s, N)
+    #animate_trajectories(passing_order, s, N)
 
     return results
 

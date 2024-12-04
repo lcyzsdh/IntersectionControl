@@ -8,4 +8,8 @@
         <route-files value="2x4_intersection.rou.xml"/>
     </input>
 
+    <output>
+        <fcd-output value="tutorial_fcd.xml"/>
+        <netstate-dump value="tutorial_netstate.xml"/>
+    </output>
 </configuration>
