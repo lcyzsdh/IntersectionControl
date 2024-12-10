@@ -12,19 +12,19 @@
     <route edges="road_ver_3 road_hrz_2" color="yellow" id="route_7"/>
 
 
-    <vType id="myType" vclass="taxi" accel="5" decle="5" length="6"/>   #以下内容为车流新增部分
+    <vType id="myType" vclass="taxi" accel="0.8" decle="4.5" length="4"/>   #以下内容为车流新增部分
 
-    <flow id="f1" begin="0" end="10000"  type="myType" vehsPerHour="200"
+    <flow id="f1" begin="0" end="10000"  type="myType" vehsPerHour="600"
           departLane='random' route="route_0" maxSpeed="50"/>
     
-    <flow id="f3" begin="7" end="10000"  type="myType" vehsPerHour="200"
+    <flow id="f3" begin="6" end="10000"  type="myType" vehsPerHour="400"
           departLane='random' route="route_2" maxSpeed="50"/>
     
-    <flow id="f5" begin="2" end="10000"  type="myType" vehsPerHour="200"
+    <flow id="f5" begin="10" end="10000"  type="myType" vehsPerHour="400"
           departLane='random' route="route_4" maxSpeed="50"/>
     
-    <flow id="f7" begin="5" end="10000"  type="myType" vehsPerHour="200"
+    <flow id="f7" begin="11" end="10000"  type="myType" vehsPerHour="300"
           departLane='random' route="route_6" maxSpeed="50"/>
-    
+
 
 </routes>

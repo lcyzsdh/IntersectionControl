@@ -10,12 +10,13 @@ from reporting import show_report
 
 config_file = open("./src/config.yaml")
 cfg=yaml.safe_load(config_file)
-
+times=0
 sumoCmd=[os.path.join(os.environ['SUMO_HOME'],'bin','sumo-gui'),
          '-c',cfg["sumo_cfg"],
          '--tripinfo-output',cfg["trip_info_out"],
-         '--collision-output',cfg["collisions_out"],
-         '--statistic-output',cfg["statistics_out"]]
+            '--collision-output',cfg["collisions_out"],
+         '--statistic-output',cfg["statistics_out"],
+        '--step-length',cfg["simulation_step_length"]]
 
 def get_zone_radii():
     z1= cfg["zone_control_size"]
@@ -30,10 +31,12 @@ def excute_adjustments(passing_data):#passing_data is a split piece of time
             if veh in traci.vehicle.getIDList():
                 print(f"vehicle {veh} is slowing down")
                 traci.vehicle.slowDown(veh,passing_data[veh]["speed"],0.1)#ID!!!!
+                times+=1
     except TraCIException:
         pass
 
 def main():
+    depart_time={}
     traci.start(sumoCmd)
     vehicles=[]
     my_veh={}
@@ -58,6 +61,7 @@ def main():
                     i,veh_id,route,cfg["veh_state_default"]
                 )
                 vehicles.append(veh)
+                depart_time[veh_id_formal]=traci.simulation.getTime()
             speed = traci.vehicle.getSpeed(veh_id)
 
         step+=1
@@ -80,18 +84,22 @@ def main():
         
         current_vehicles=traci.vehicle.getIDList()
 
-        if step>=20:#firstly enter the zone
+        if step>=200:#firstly enter the zone
             if cfg["passing_order_mode"]==cfg["passing_order_gurobi"]:
-                if (step-20)%100==0:#100 steps for a total decision
+                if (step-200)%50==0:#100 steps for a total decision
                     veh_data=vehicles[0].gather_veh_data(vehicles)
                     passing_data_total=vehicles[0].get_passing_data()
+                if passing_data_total==-1:
+                    print(f"step {step}: No solution")
+                    continue
                 excute_adjustments(passing_data_total[(step-20)%50])#split the total decision into pieces
                 print(f"step {step}: passing order is executed")
-                for veh in vehicles:
-                    print(f"vehicle {veh.veh_id} position {traci.vehicle.getPosition(veh.veh_id_ac)} speed {traci.vehicle.getSpeed(veh.veh_id_ac)}")
+                #for veh in vehicles:
+                    #print(f"vehicle {veh.veh_id} position {traci.vehicle.getPosition(veh.veh_id_ac)} speed {traci.vehicle.getSpeed(veh.veh_id_ac)}")
         
     traci.close()
     #show_report
+    print(f"Simulation finished,total speed adjustments: {times}")
 
 if __name__ == "__main__":
     if 'SUMO_HOME' in os.environ:

@@ -15,7 +15,7 @@ class Vehicle:
         self.route = route
         self.state = state
         self.veh_data = veh_data
-        traci.vehicle.setSpeedMode(self.veh_id_ac, cfg["veh_safe_mode"])
+        traci.vehicle.setSpeedMode(self.veh_id_ac, 31)
         #traci.vehicle.add(veh_id_ac, route)
         self.set_vehicle_state(state)
 
@@ -56,7 +56,8 @@ class Vehicle:
                 "distance": float(self.get_dist_to_intersection(veh.veh_id_ac)),
                 "speed": traci.vehicle.getSpeed(veh.veh_id_ac),
                 "Position":traci.vehicle.getPosition(veh.veh_id_ac),
-                "State":veh.state
+                "State":veh.state,
+                "Real_ID":veh.veh_id_ac
             }
         
         return self.veh_data
@@ -71,5 +72,5 @@ class Vehicle:
         passing_data=PassingOrder(ans)#sort the vehicles by distance to the intersection
 
         recall=passing_data.calculate_global_changes()
-
+        
         return recall

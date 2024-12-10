@@ -6,8 +6,8 @@ config_file = open("./src/config.yaml")
 cfg = yaml.safe_load(config_file)
 # Define the parameters
 #TODO:Correct the parameters
-N = 50  # Number of time steps
-T = 5  # Total time horizon
+N = 100  # Number of time steps
+T = 10  # Total time horizon
 dt = T / N  # Time step
 #v_ref = 10  # Reference speed
 a_min = cfg["a_min"]  # Minimum acceleration
@@ -49,13 +49,16 @@ def animate_trajectories(passing_order, s, N):
     plt.show()
 
 def cal_adjustments(passing_order,velocity):
+    print("model start")
+    print(passing_order)
     m=gp.Model("integrator_qp")
     s={}
     u={}
     v={}
     for veh in passing_order:
+        #print("add var"+veh)
         #TODO: correct the bound
-        s[veh]=m.addVars(2,N,lb=-800,ub=800,name="s_"+veh)# State variables [positionX, positionY]
+        s[veh]=m.addVars(2,N,lb=-2000,ub=2000,name="s_"+veh)# State variables [positionX, positionY]
         v[veh]=m.addVars(N,lb=0,ub=15,name="v_"+veh)# Control variables [velocity]
         u[veh]=m.addVars(N,lb=-5,ub=5,name="u_"+veh)# Control variables [acceleration]
 
@@ -87,12 +90,17 @@ def cal_adjustments(passing_order,velocity):
                 #print("get!!!!!!"+veh)
     for veh in passing_order:
         for veh_1 in passing_order:
+            #print("add route")
             #print([passing_order[veh]["route"],passing_order[veh]["route"]])
             if [passing_order[veh]["route"],passing_order[veh_1]["route"]] in [[0, 4], [0, 6],[2, 4], [2, 6]]:
                 for k in range(N):
+                    
                     #print("get!!!!!!")
                     #TODO: correct the distance fomula
-                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(5)**2)#distance needs tuning
+                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(4.5)**2)#distance needs tuning
+            if passing_order[veh]["route"]==passing_order[veh_1]["route"]:
+                for k in range(N):
+                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(4)**2)
 
     #initial condition
     for veh in passing_order:
@@ -104,12 +112,16 @@ def cal_adjustments(passing_order,velocity):
     m.optimize()
     #m.computeIIS()
     #m.write('model.ilp')
-
     results=[]
+    if m.status!=GRB.Status.OPTIMAL:
+        print("No solution")
+        #TODO: return the original data
+        return -1
+    
     for k in range(N):
         results.append({})
         for veh in passing_order:
-            print(f"Time step {k}: veh_id = {veh} PositionX = {s[veh][0, k].x}, PositionY = {s[veh][1, k].X}, Velocity = {v[veh][k].X}")
+            #print(f"Time step {k}: veh_id = {veh} PositionX = {s[veh][0, k].x}, PositionY = {s[veh][1, k].X}, Velocity = {v[veh][k].X}")
             results[k][veh]={"PositionX":s[veh][0, k].x,"PositionY":s[veh][1, k].X,"Velocity":v[veh][k].X}
 
     print('Obj:', m.objVal)
