@@ -49,8 +49,8 @@ def animate_trajectories(passing_order, s, N):
     plt.show()
 
 def cal_adjustments(passing_order,velocity):
-    print("model start")
-    print(passing_order)
+    #print("model start")
+    #print(passing_order)
     m=gp.Model("integrator_qp")
     s={}
     u={}
@@ -58,14 +58,14 @@ def cal_adjustments(passing_order,velocity):
     for veh in passing_order:
         #print("add var"+veh)
         #TODO: correct the bound
-        s[veh]=m.addVars(2,N,lb=-2000,ub=2000,name="s_"+veh)# State variables [positionX, positionY]
-        v[veh]=m.addVars(N,lb=0,ub=15,name="v_"+veh)# Control variables [velocity]
-        u[veh]=m.addVars(N,lb=-5,ub=5,name="u_"+veh)# Control variables [acceleration]
+        s[veh]=m.addVars(2,N,lb=-1000,ub=1000,name="s_"+veh)# State variables [positionX, positionY]
+        v[veh]=m.addVars(N,lb=0,ub=16,name="v_"+veh)# Control variables [velocity]
+        u[veh]=m.addVars(N,lb=-8,ub=8,name="u_"+veh)# Control variables [acceleration]
 
     # Objective: minimize the sum of squared deviations from the reference speed
     m.setObjective(gp.quicksum((v[veh][k]-velocity[veh])**2 for veh in passing_order for k in range(N)),GRB.MINIMIZE)
 
-    #System dnamics
+    #System dynamics
     for veh in passing_order:
         for k in range(N-1):
             if passing_order[veh]["route"] ==0:#horizontal,right
@@ -90,33 +90,31 @@ def cal_adjustments(passing_order,velocity):
                 #print("get!!!!!!"+veh)
     for veh in passing_order:
         for veh_1 in passing_order:
-            #print("add route")
-            #print([passing_order[veh]["route"],passing_order[veh]["route"]])
-            if [passing_order[veh]["route"],passing_order[veh_1]["route"]] in [[0, 4], [0, 6],[2, 4], [2, 6]]:
+            if [passing_order[veh]["route"],passing_order[veh_1]["route"]] in [['0', '4'], ['0', '6'],['2', '4'], ['2', '6']]:
                 for k in range(N):
-                    
-                    #print("get!!!!!!")
                     #TODO: correct the distance fomula
-                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(4.5)**2)#distance needs tuning
-            if passing_order[veh]["route"]==passing_order[veh_1]["route"]:
-                for k in range(N):
-                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(4)**2)
+                    m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(6)**2)#distance needs tuning
+            #if passing_order[veh]["route"]==passing_order[veh_1]["route"]:
+                #for k in range(N):
+                    #m.addConstr(((s[veh][0,k]-s[veh_1][0,k])**2+(s[veh][1,k]-s[veh_1][1,k])**2)>=(4)**2)
 
     #initial condition
     for veh in passing_order:
         m.addConstr(s[veh][0,0]==passing_order[veh]["Position"][0])#positionX
         m.addConstr(s[veh][1,0]==passing_order[veh]["Position"][1])#positionY
         m.addConstr(v[veh][0]==velocity[veh])#velocity
+        m.addConstr(u[veh][0]==0)#acceleration
 
     m.setParam("TimeLimit", 10)
     m.optimize()
-    #m.computeIIS()
-    #m.write('model.ilp')
+    
     results=[]
     if m.status!=GRB.Status.OPTIMAL:
+        #m.computeIIS()
+        #m.write('model.ilp')
         print("No solution")
         #TODO: return the original data
-        return -1
+        return -1,-1
     
     for k in range(N):
         results.append({})
@@ -127,7 +125,7 @@ def cal_adjustments(passing_order,velocity):
     print('Obj:', m.objVal)
     #animate_trajectories(passing_order, s, N)
 
-    return results
+    return results,m.objVal
 
 #testing
 if __name__ == "__main__":

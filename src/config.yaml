@@ -23,7 +23,7 @@ colliding_routes: [[0, 4], [0, 6], [0, 7], [1, 4], [2, 4], [2, 6], [2, 5], [3, 6
 veh_mode: 32  # no checks enabled
 veh_safe_mode: 32
 
-veh_speed_default: 13.88  # ~50km/h
+veh_speed_default: 11.11  # ~40km/h
 veh_speed_adjust: 8.88  # -5m/s
 veh_speed_intersection: 6.94  # ~25km/h
 
@@ -32,7 +32,7 @@ veh_state_control: "control"
 veh_state_intersection: "intersection"
 veh_state_out: "sumo"
 
-zone_control_size: 500
+zone_control_size: 200
 zone_intersection_size: 100
 
 collision_distance_thresh: 20  # needs tuning

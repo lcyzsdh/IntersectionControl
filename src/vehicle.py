@@ -23,11 +23,11 @@ class Vehicle:
         self.state = state
         if state == cfg["veh_state_default"]:
             traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_grey"])
-            
             traci.vehicle.setSpeed(self.veh_id_ac, cfg["veh_speed_default"])
 
         elif state == cfg["veh_state_control"]:
             traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_green"])
+            traci.vehicle.setSpeed(self.veh_id_ac, cfg["veh_speed_intersection"])
 
         elif state == cfg["veh_state_intersection"]:
             traci.vehicle.setColor(self.veh_id_ac, cfg["veh_col_white"])
@@ -64,13 +64,13 @@ class Vehicle:
     
     def get_passing_data(self):
         passing_data={}
-        print(self.veh_data)
+        #print(self.veh_data)
         tmp=sorted(self.veh_data.items(),key=lambda x:x[1]["distance"],reverse=True)
         ans={}
         for i in range(len(tmp)):
             ans[str(tmp[i][0])]=tmp[i][1]
         passing_data=PassingOrder(ans)#sort the vehicles by distance to the intersection
 
-        recall=passing_data.calculate_global_changes()
+        recall,obj=passing_data.calculate_global_changes()
         
-        return recall
+        return recall,obj

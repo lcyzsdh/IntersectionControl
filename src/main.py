@@ -10,7 +10,6 @@ from reporting import show_report
 
 config_file = open("./src/config.yaml")
 cfg=yaml.safe_load(config_file)
-times=0
 sumoCmd=[os.path.join(os.environ['SUMO_HOME'],'bin','sumo-gui'),
          '-c',cfg["sumo_cfg"],
          '--tripinfo-output',cfg["trip_info_out"],
@@ -43,8 +42,9 @@ def main():
     i=0
     passing_data_total = None
     highest_total = 0
-
+    coll_k=0
     step=0
+    times=0
     while step<cfg["max_simulation_steps"]:
         traci.simulationStep()#set step length
 
@@ -83,22 +83,24 @@ def main():
                 vehicles.remove(veh)
         
         current_vehicles=traci.vehicle.getIDList()
-
-        if step>=200:#firstly enter the zone
+        if step>=400:#firstly enter the zone
             if cfg["passing_order_mode"]==cfg["passing_order_gurobi"]:
-                if (step-200)%50==0:#100 steps for a total decision
+                if (step-400)%100==0:#100 steps for a total decision
                     veh_data=vehicles[0].gather_veh_data(vehicles)
-                    passing_data_total=vehicles[0].get_passing_data()
+                    passing_data_total,obj=vehicles[0].get_passing_data()
                 if passing_data_total==-1:
-                    print(f"step {step}: No solution")
+                    #print(f"step {step}: No solution")
                     continue
+                if obj!=0:
+                    times+=obj
                 excute_adjustments(passing_data_total[(step-20)%50])#split the total decision into pieces
-                print(f"step {step}: passing order is executed")
+                #print(f"step {step}: passing order is executed")
+                if traci.simulation.getCollisions():
+                    coll_k+=traci.simulation.getCollidingVehiclesNumber()
                 #for veh in vehicles:
                     #print(f"vehicle {veh.veh_id} position {traci.vehicle.getPosition(veh.veh_id_ac)} speed {traci.vehicle.getSpeed(veh.veh_id_ac)}")
-        
     traci.close()
-    #show_report
+    print(f"Total collision times: {coll_k}")
     print(f"Simulation finished,total speed adjustments: {times}")
 
 if __name__ == "__main__":
