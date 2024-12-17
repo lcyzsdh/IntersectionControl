@@ -1,5 +1,6 @@
 intersection_coords: [0, 0]
-max_simulation_steps: 200
+max_simulation_steps: 2000
+simulation_step_length: "0.1"
 mcts_time: 200  # mcts time budget in ms
 
 sumo_binary: "/opt/homebrew/opt/sumo/share/sumo"
@@ -11,7 +12,8 @@ statistics_out: "./out/statistics.xml"
 
 passing_order_fcfs: "fcfs"
 passing_order_mcts: "mcts"
-passing_order_mode: "fcfs"
+passing_order_gurobi: "gurobi"
+passing_order_mode: "gurobi"
 
 num_vehicles: 50
 num_routes: 8
@@ -21,15 +23,16 @@ colliding_routes: [[0, 4], [0, 6], [0, 7], [1, 4], [2, 4], [2, 6], [2, 5], [3, 6
 veh_mode: 32  # no checks enabled
 veh_safe_mode: 32
 
-veh_speed_default: 13.88  # ~50km/h
+veh_speed_default: 11.11  # ~40km/h
 veh_speed_adjust: 8.88  # -5m/s
 veh_speed_intersection: 6.94  # ~25km/h
 
 veh_state_default: "sumo"
 veh_state_control: "control"
 veh_state_intersection: "intersection"
+veh_state_out: "sumo"
 
-zone_control_size: 500
+zone_control_size: 200
 zone_intersection_size: 100
 
 collision_distance_thresh: 20  # needs tuning

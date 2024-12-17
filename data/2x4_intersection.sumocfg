@@ -8,4 +8,19 @@
         <route-files value="2x4_intersection.rou.xml"/>
     </input>
 
+    <report>
+        <collision-output value="collisions.xml"/>
+    </report>
+
+    <processing>
+        <collision.action value="warn"/>
+        <collision.check-junctions value="true"/>
+        <collision.mingap-factor value="3"/>
+        <collision.stoptime value="0"/>
+    </processing>
+    
+    <output>
+        <fcd-output value="tutorial_fcd.xml"/>
+        <netstate-dump value="tutorial_netstate.xml"/>
+    </output>
 </configuration>

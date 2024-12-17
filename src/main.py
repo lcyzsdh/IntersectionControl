@@ -9,101 +9,99 @@ from passing_order import PassingOrder
 from reporting import show_report
 
 config_file = open("./src/config.yaml")
-cfg = yaml.safe_load(config_file)
+cfg=yaml.safe_load(config_file)
+sumoCmd=[os.path.join(os.environ['SUMO_HOME'],'bin','sumo-gui'),
+         '-c',cfg["sumo_cfg"],
+         '--tripinfo-output',cfg["trip_info_out"],
+            '--collision-output',cfg["collisions_out"],
+         '--statistic-output',cfg["statistics_out"],
+        '--step-length',cfg["simulation_step_length"]]
 
-sumoCmd = [
-    os.path.join(os.environ['SUMO_HOME'], 'bin', 'sumo'),
-    '-c', cfg["sumo_cfg"],
-    '--tripinfo-output', cfg["trip_info_out"],
-    '--collision-output', cfg["collisions_out"],
-    '--statistic-output', cfg["statistics_out"]
-]
+def get_zone_radii():
+    z1= cfg["zone_control_size"]
+    z2= cfg["zone_intersection_size"]
 
-def add_vehicles(num_vehicles):
-    vehicles = []
-    for i in range(num_vehicles):
-        veh_id = "veh_{}".format(i)
-        route = "route_{}".format(randint(0, cfg["num_routes"] - 1))#根据配置文件中的路数量为当前车辆选择一个随机的路线
+    z1_rad=z2+z1
+    return z1_rad,z2
 
-        veh = Vehicle(
-            veh_id=veh_id,
-            route=route,
-            state=cfg["veh_state_default"]
-        )
-        vehicles.append(veh)
-
-    return vehicles
-
-def get_zone_radii():#计算控制区和交叉路口的半径
-    z1 = cfg["zone_control_size"]
-    z2 = cfg["zone_intersection_size"]
-
-    z1_rad = z2 + z1
-
-    return z1_rad, z2
-
-def execute_adjustments(passing_order):
+def excute_adjustments(passing_data):#passing_data is a split piece of time
     try:
-        for veh in passing_order.adjusted_order:
-            # if veh in traci.vehicle.getIDList(): 
-                if passing_order.adjusted_order[veh] == 0:
-                    traci.vehicle.slowDown(veh, cfg["veh_speed_default"], 0)
-                else:
-                    traci.vehicle.slowDown(veh, cfg["veh_speed_adjust"], 0)#设置为0表示马上到所需速度，后续需要考虑车辆加速度
-                    traci.vehicle.setColor(veh, cfg["veh_col_orange"])
-                    passing_order.adjusted_order[veh] -= 0.25#这里不懂
+        for veh in passing_data:
+            if veh in traci.vehicle.getIDList():
+                print(f"vehicle {veh} is slowing down")
+                traci.vehicle.slowDown(veh,passing_data[veh]["speed"],0.1)#ID!!!!
+                times+=1
     except TraCIException:
         pass
 
-def main():#可以添加车辆流
+def main():
+    depart_time={}
     traci.start(sumoCmd)
-    vehicles = add_vehicles(cfg["num_vehicles"])#添加车辆
-    passing_order = None
+    vehicles=[]
+    my_veh={}
+    i=0
+    passing_data_total = None
     highest_total = 0
+    coll_k=0
+    step=0
+    times=0
+    while step<cfg["max_simulation_steps"]:
+        traci.simulationStep()#set step length
 
-    step = 0
-    while step < cfg["max_simulation_steps"]:
-        traci.simulationStep()
-        step += 1
-        # print(f"Step: {step}")
+        veh_id_list = traci.vehicle.getIDList()
+        for veh_id in veh_id_list:
+            if veh_id in my_veh:
+                veh_id_formal = my_veh[veh_id]       #veh_id_formal是自然数序列对应的车辆id，veh_id是SUMO中自动赋予的id
+            else:
+                i += 1
+                my_veh[veh_id] = i
+                veh_id_formal = my_veh[veh_id]
+                route = traci.vehicle.getRouteID(veh_id)
+                veh = Vehicle(
+                    i,veh_id,route,cfg["veh_state_default"]
+                )
+                vehicles.append(veh)
+                depart_time[veh_id_formal]=traci.simulation.getTime()
+            speed = traci.vehicle.getSpeed(veh_id)
 
-        z1_radius, z2_radius = get_zone_radii()
-
-        
+        step+=1
+        z1_r,z2_r=get_zone_radii()
 
         for veh in vehicles:
-            try:#！需要在每次开始之前移除已经离开仿真环境的车辆
-                if veh.is_outbound():
-                    veh.set_vehicle_state(cfg["veh_state_default"])
-                else:
-                    if veh.get_dist_to_intersection() < z2_radius:
+            try:
+                #if veh.is_outbound():
+                #    veh.set_vehicle_state(cfg["veh_state_default"])
+                #else:
+                    if veh.get_dist_to_intersection() < z2_r:
                         veh.set_vehicle_state(cfg["veh_state_intersection"])
-                    elif veh.get_dist_to_intersection() < z1_radius:
+                    elif veh.get_dist_to_intersection() < z1_r:
                         veh.set_vehicle_state(cfg["veh_state_control"])
-
-            except TraCIException:  # vehicle has left the sim
+                    else:
+                        veh.set_vehicle_state(cfg["veh_state_out"])
+            except TraCIException:
                 print(f"vehicle {veh.veh_id} has left the sim at step {step}")
                 vehicles.remove(veh)
-                
-        # Get the list of vehicles currently in the simulation
-        current_vehicles = traci.vehicle.getIDList()
-        # print(f"current vehicles: {current_vehicles}")
-
-        if step == 20:
-            if cfg["passing_order_mode"] == cfg["passing_order_fcfs"]:
-                vehicles[0].gather_veh_data(vehicles)
-                passing_order = vehicles[0].get_passing_order()
-
-        if step > 25:
-            # Filter out vehicles that are no longer in the simulation
-            passing_order.adjusted_order = {veh: adj for veh, adj in passing_order.adjusted_order.items() if veh in current_vehicles}
-            execute_adjustments(passing_order)
-            
-     
-
+        
+        current_vehicles=traci.vehicle.getIDList()
+        if step>=400:#firstly enter the zone
+            if cfg["passing_order_mode"]==cfg["passing_order_gurobi"]:
+                if (step-400)%100==0:#100 steps for a total decision
+                    veh_data=vehicles[0].gather_veh_data(vehicles)
+                    passing_data_total,obj=vehicles[0].get_passing_data()
+                if passing_data_total==-1:
+                    #print(f"step {step}: No solution")
+                    continue
+                if obj!=0:
+                    times+=obj
+                excute_adjustments(passing_data_total[(step-20)%50])#split the total decision into pieces
+                #print(f"step {step}: passing order is executed")
+                if traci.simulation.getCollisions():
+                    coll_k+=traci.simulation.getCollidingVehiclesNumber()
+                #for veh in vehicles:
+                    #print(f"vehicle {veh.veh_id} position {traci.vehicle.getPosition(veh.veh_id_ac)} speed {traci.vehicle.getSpeed(veh.veh_id_ac)}")
     traci.close()
-
-    show_report(passing_order, highest_total)
+    print(f"Total collision times: {coll_k}")
+    print(f"Simulation finished,total speed adjustments: {times}")
 
 if __name__ == "__main__":
     if 'SUMO_HOME' in os.environ:
